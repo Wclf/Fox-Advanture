@@ -24,7 +24,6 @@ public class AudioSystem : MonoBehaviour
         switch(sfxName)
         {
             case "landing":
-                
                 SoundObjectCreation(sfx_landing);
                 break;
             case "cherry":
@@ -41,9 +40,33 @@ public class AudioSystem : MonoBehaviour
         //create SoundsObject gameobject
         GameObject newObject = Instantiate(soundObject,transform);
         //assign audioClip to its audiosource
-        newObject.GetComponent<AudioSource>().clip = clip; 
+        newObject.GetComponent<AudioSource>().clip = clip;
         //play the audio
         newObject.GetComponent<AudioSource>().Play();   
+    }
+
+    public void PlayMusic(string musicName)
+    {
+        switch (musicName)
+        {
+            case "tiktok":
+                MusicObjectCreation(music_tiktok);
+                break;
+            default:
+                break;
+        }
+    }
+
+    void MusicObjectCreation(AudioClip clip)
+    {
+        //create SoundsObject gameobject
+        GameObject newObject = Instantiate(soundObject, transform);
+        //assign audioClip to its audiosource
+        newObject.GetComponent<AudioSource>().clip = clip;
+        //make the audio source looping
+        newObject.GetComponent<AudioSource>().loop = true;
+        //play the audio
+        newObject.GetComponent<AudioSource>().Play();
     }
 
 }
