@@ -72,6 +72,11 @@ public class Fox : MonoBehaviour
     {
         GroundCheck();
         Move(horizontalValue, isCrouch);
+        if(Enemy.isEnemyDeath)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+            Enemy.isEnemyDeath = false;
+        }
     }
 
     bool CanMove()
@@ -96,7 +101,6 @@ public class Fox : MonoBehaviour
             {
                 avaiableJump = totalsJump;
                 multipleJump = false;
-                AudioSystem.instance.PlaySFX("landing");
             }
         }
         else
@@ -184,7 +188,7 @@ public class Fox : MonoBehaviour
         {
             xVal *= speedRunMofify;
         }
-        if(crouchFlag)
+        if(crouchFlag && isGrounded)
         {
             xVal *= speedCrouchModify;
         }
@@ -209,4 +213,6 @@ public class Fox : MonoBehaviour
             transform.localScale = localScale;
         }
     }
-}
+
+
+}   
