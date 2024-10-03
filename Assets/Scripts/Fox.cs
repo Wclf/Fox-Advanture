@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using Unity.PlasticSCM.Editor.WebApi;
+using UnityEditor;
 using UnityEngine;
 
 public class Fox : MonoBehaviour
@@ -29,12 +30,16 @@ public class Fox : MonoBehaviour
     [SerializeField] int totalsJump;
     int avaiableJump;
     [SerializeField] float jumpPower = 5f;
-    
+    bool soundGround = true;
+
+    AudioManager audioManager;
+
     private void Awake()
     {
         avaiableJump = totalsJump;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
     private void Update()
@@ -42,26 +47,26 @@ public class Fox : MonoBehaviour
         if (CanMove() == false)
             return;
 
-        horizontalValue = Input.GetAxisRaw("Horizontal");  
+        horizontalValue = Input.GetAxisRaw("Horizontal");
 
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             isRunning = true;
         }
-        if(Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             isRunning = false;
         }
-        if(Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
             Jump();
         }
 
-        if(Input.GetButtonDown("Crouch"))
+        if (Input.GetButtonDown("Crouch"))
         {
             isCrouch = true;
         }
-        if(Input.GetButtonUp("Crouch"))
+        if (Input.GetButtonUp("Crouch"))
         {
             isCrouch = false;
         }
@@ -72,11 +77,16 @@ public class Fox : MonoBehaviour
     {
         GroundCheck();
         Move(horizontalValue, isCrouch);
-        if(Enemy.isEnemyDeath)
+        if (Enemy.isEnemyDeath || EnemyAi.isEnemyDeath)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
             Enemy.isEnemyDeath = false;
+            EnemyAi.isEnemyDeath = false;
         }
+        if(FindObjectOfType<Death>().isDeath) {
+            rb.velocity = new Vector2(rb.velocity.x * -2f, rb.velocity.y);
+        }
+
     }
 
     bool CanMove()
@@ -85,6 +95,8 @@ public class Fox : MonoBehaviour
         if(FindObjectOfType<InteractionSystem>().isExamining )
             can = false;
         if (FindObjectOfType<InventorySystem>().isOpen)
+            can = false;
+        if (FindObjectOfType<Death>().isDeath)
             can = false;
         return can;
     }
@@ -109,6 +121,15 @@ public class Fox : MonoBehaviour
             {
                 StartCoroutine(CoyoteJumpDelay());
             }
+        }
+        if(isGrounded == false)
+        {
+            soundGround = true;
+        }
+        if (isGrounded == true && soundGround == true)
+        {
+            audioManager.PlaySFX(audioManager.hitTheGround);
+            soundGround = false;
         }
         // can replace code 
         // isGrounded = Physics2D.OverlapCircle(groundCheck.position, radiusCollision, groundLayer);
@@ -183,6 +204,7 @@ public class Fox : MonoBehaviour
         #endregion
 
         #region Move & run
+
         float xVal = dir * speed * 100 * Time.fixedDeltaTime;
         if (isRunning)
         {

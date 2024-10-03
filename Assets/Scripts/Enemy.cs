@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,12 +16,18 @@ public class Enemy : MonoBehaviour
     private Vector3 startingPosition;
     private bool movingRight = true;
     private Animator animator;
-    
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
     void Start()
     {
         playerStartPosition = playerObject.transform.position;
         startingPosition = transform.position; // Store the starting position
         animator = GetComponent<Animator>();
+
     }
 
     void Update()
@@ -79,20 +86,15 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Die();
             isEnemyDeath = true;
+            animator.SetTrigger("EnemyDie");
+            audioManager.PlaySFX(audioManager.killEnemy);
+            GetComponent<Collider2D>().enabled = false;
+
+            Destroy(gameObject, 1f);
         }
     }
 
-    void Die()
-    {
-        
-        animator.SetTrigger("EnemyDie");
-        
-        GetComponent<Collider2D>().enabled = false;
-
-        Destroy(gameObject, 1f);
-    }
 
 
 
