@@ -5,28 +5,30 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private float damage;
+
     public float speed = 2f; // Speed of the enemy
     public float moveDistance = 3f; // Distance to move in one direction
     public GameObject playerObject;
-    public Vector3 playerStartPosition;
+    private Vector3 playerStartPosition;
     public float restartDelay = 2f;
     public static bool isEnemyDeath = false;
-    
 
     private Vector3 startingPosition;
     private bool movingRight = true;
     private Animator animator;
     AudioManager audioManager;
-
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
     void Start()
     {
+
         playerStartPosition = playerObject.transform.position;
         startingPosition = transform.position; // Store the starting position
         animator = GetComponent<Animator>();
+
 
     }
 
@@ -76,11 +78,14 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        
-            
+        if(collision.gameObject.CompareTag("Player"))
+        {
+
+        }
     }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -94,6 +99,9 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject, 1f);
         }
     }
+
+ 
+
 
 
 

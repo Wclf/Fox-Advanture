@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using Unity.PlasticSCM.Editor.WebApi;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -83,7 +84,8 @@ public class Fox : MonoBehaviour
             Enemy.isEnemyDeath = false;
             EnemyAi.isEnemyDeath = false;
         }
-        if(FindObjectOfType<Death>().isDeath) {
+        if(FindObjectOfType<Death>().isDeath == true)
+        {
             rb.velocity = new Vector2(rb.velocity.x * -2f, rb.velocity.y);
         }
 

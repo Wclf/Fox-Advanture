@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,9 +12,11 @@ public class EnemyAi : MonoBehaviour
     public Transform player;
     public Vector3 startPosition;
     public Animator animator;
+    
 
     private Vector3 target;
     private bool movingtoB = true;
+    
 
     public static bool isEnemyDeath = false;
 

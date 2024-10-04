@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
 
@@ -29,14 +30,15 @@ public class Death : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Enemy"))
         {
-            animator.SetTrigger("IsHurt");                        
+            animator.SetTrigger("IsHurt");
             isDeath = true;
-            DisableColliders();
             isAttack = true;
+            Health.currentHealth -= 0.5f;
             audioManager.PlaySFX(audioManager.death);
             Invoke("RestartGame", 1f);
         }
     }
+
 
     void DisableColliders()
     {
@@ -60,7 +62,6 @@ public class Death : MonoBehaviour
         player.transform.position = startPositionSave;
         isDeath = false;
         isAttack = false;
-        EnableColliders();
         player.gameObject.SetActive(true);
 
     }
