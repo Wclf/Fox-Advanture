@@ -94,10 +94,6 @@ public class Fox : MonoBehaviour
     bool CanMove()
     {
         bool can = true;
-        if(FindObjectOfType<InteractionSystem>().isExamining )
-            can = false;
-        if (FindObjectOfType<InventorySystem>().isOpen)
-            can = false;
         if (FindObjectOfType<Death>().isDeath)
             can = false;
         return can;
@@ -151,7 +147,7 @@ public class Fox : MonoBehaviour
 
     void Jump()
     {
-        if (isGrounded)
+        if (isGrounded && isCrouch == false)
         {
             multipleJump = true;
             avaiableJump--;
