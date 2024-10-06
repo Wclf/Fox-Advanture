@@ -13,6 +13,7 @@ public class Death : MonoBehaviour
     public static bool isAttack;
     private Collider2D[] colliders;
     AudioManager audioManager;
+    public static float deathCounter;
 
     private void Awake()
     {
@@ -34,6 +35,7 @@ public class Death : MonoBehaviour
             isDeath = true;
             isAttack = true;
             Health.currentHealth -= 0.5f;
+            deathCounter++;
             audioManager.PlaySFX(audioManager.death);
             Invoke("RestartGame", 1f);
         }
