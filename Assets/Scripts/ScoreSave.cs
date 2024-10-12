@@ -8,7 +8,13 @@ using UnityEngine.UIElements;
 public class ScoreSave : MonoBehaviour
 {
     public static float score = 0;
-    [SerializeField] private TextMeshProUGUI _scoreText;
+    public static float CherryCount = 0;
+    public static float GemCount = 0;
+
+    private float _scoreText;
+    [SerializeField] private TextMeshProUGUI _CherryCount;
+    [SerializeField] private TextMeshProUGUI _GemCount;
+
 
 
 
@@ -16,14 +22,14 @@ public class ScoreSave : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Cherry"))
         {
-            score++;
-            _scoreText.text = score.ToString();
+            CherryCount++;
+            _CherryCount.text = CherryCount.ToString();
             Destroy(collision.gameObject);
         }
         else if(collision.gameObject.CompareTag("Gem"))
         {
-            score += 10f;
-            _scoreText.text = score.ToString();
+            GemCount++;
+            _GemCount.text = GemCount.ToString();
             Destroy(collision.gameObject);
         }
 

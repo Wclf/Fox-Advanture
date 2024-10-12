@@ -62,6 +62,7 @@ public class Death : MonoBehaviour
     {
         player.gameObject.SetActive(false);
         player.transform.position = startPositionSave;
+
         isDeath = false;
         isAttack = false;
         player.gameObject.SetActive(true);

@@ -19,6 +19,9 @@ public class Health : MonoBehaviour
 
     private void Update()
     {
-
+        if(currentHealth <= 0)
+        {
+            RestartGame.Restart();
+        }
     }
 }
